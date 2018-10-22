@@ -1,0 +1,44 @@
+[
+  {
+    "id": "OL50870A",
+    "name": "Thomas Hobbes",
+    "bio": "Thomas Hobbes, in some older texts Thomas Hobbs of Malmsbury, was an English philosopher, remembered today for his work on political philosophy. His 1651 book Leviathan established the foundation for most of Western political philosophy from the perspective of social contract theory.\n\nHobbes also contributed to a diverse array of fields, including history, geometry, physics of gases, theology, ethics, general philosophy, and political science. His account of human nature as self-interested cooperation has proved to be an enduring theory in the field of philosophical anthropology. He was one of the main philosophers who founded materialism.<sup>[1][1]</sup>\n\n\n  [1]: http://en.wikipedia.org/wiki/Thomas_Hobbes",
+    "birthDate": "1588-04-05",
+    "deathDate": "1679-12-04"
+  },
+  {
+    "id": "OL18074A",
+    "name": "Immanuel Kant",
+    "bio": "Immanuel Kant was an 18th-century German philosopher from the Prussian city of Königsberg. Kant was the last influential philosopher of modern Europe in the classic sequence of the theory of knowledge during the Enlightenment beginning with thinkers John Locke, George Berkeley, and David Hume.\n\nKant created a new perspective in philosophy which had widespread influences on philosophy continuing through to the 21st century. He published important works on epistemology, as well as works relevant to religion, law, and history. One of his most prominent works is the *Critique of Pure Reason*, an investigation into the limitations and structure of reason itself. It encompasses an attack on traditional metaphysics and epistemology, and highlights Kant's own contribution to these areas. The other main works of his maturity are the *Critique of Practical Reason*, which concentrates on ethics, and the *Critique of Judgment*, which investigates aesthetics and teleology. <sup>[1][1]</sup>\n\n\n  [1]: http://en.wikipedia.org/wiki/Immanuel_Kant",
+    "birthDate": "1724-04-22",
+    "deathDate": "1804-02-12"
+  },
+  {
+    "id": "OL27530A",
+    "name": "John Rawls",
+    "bio": "John Bordley Rawls (February 21, 1921 – November 24, 2002) was an American moral and political philosopher in the liberal tradition.\n\n**Source**: [John Rawls](https://en.wikipedia.org/wiki/John_Rawls) on Wikipedia.",
+    "birthDate": "1921-02-21",
+    "deathDate": "2002-11-24"
+  },
+  {
+    "id": "OL108289A",
+    "name": "John Stuart Mill",
+    "bio": "John Stuart Mill (20 May 1806 – 8 May 1873), usually cited as J. S. Mill, was a British philosopher, political economist, and civil servant. One of the most influential thinkers in the history of liberalism, he contributed widely to social theory, political theory, and political economy. Dubbed \"the most influential English-speaking philosopher of the nineteenth century\", Mill's conception of liberty justified the freedom of the individual in opposition to unlimited state and social control.\n\n**Source**: [John Stuart Mill](https://en.wikipedia.org/wiki/John_Stuart_Mill) on Wikipedia.",
+    "birthDate": "1806-05-20",
+    "deathDate": "1873-05-08"
+  },
+  {
+    "id": "OL29048A",
+    "name": "Jean-Jacques Rousseau",
+    "bio": "Jean-Jacques Rousseau was a major Genevois philosopher, writer, and composer of 18th-century Romanticism. His political philosophy influenced the French Revolution and the development of modern political, sociological and educational thought.\n\nHis novel, *Emile: or, On Education*, which he considered his most important work, is a seminal treatise on the education of the whole person for citizenship. His sentimental novel, Julie, ou la nouvelle Héloïse, was of great importance to the development of pre-Romanticism and romanticism in fiction. Rousseau's autobiographical writings: his *Confessions*, which initiated the modern autobiography, and his *Reveries of a Solitary Walker* were among the pre-eminent examples of the late 18th-century movement known as the \"Age of Sensibility\", featuring an increasing focus on subjectivity and introspection that has characterized the modern age.\n\nRousseau also made important contributions to music as a theorist. During the period of the French Revolution, Rousseau was the most popular of the philosophers among members of the Jacobin Club. He was interred as a national hero in the Panthéon in Paris, in 1794, 16 years after his death.<sup>[1][1]</sup>\n\n\n  [1]: http://en.wikipedia.org/wiki/Jean-Jacques_Rousseau",
+    "birthDate": "1712-06-28",
+    "deathDate": "1778-07-02"
+  },
+  {
+    "id": "OL53216A",
+    "name": "Georg Wilhelm Friedrich Hegel",
+    "bio": null,
+    "birthDate": "1770-08-27",
+    "deathDate": "1831-11-14"
+  }
+]

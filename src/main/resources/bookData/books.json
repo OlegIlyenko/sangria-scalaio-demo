@@ -1,0 +1,110 @@
+[
+  {
+    "id": "OL653987W",
+    "title": "Leviathan",
+    "description": "Thomas Hobbes' Leviathan, from 1651, is one of the first and most influential arguments towards social contract. Written in the midst of the English Civil War, it concerns the structure of government and society and argues for strong central governance and the rule of an absolute sovereign as the way to avoid civil war and chaos.",
+    "authorId": "OL50870A"
+  },
+  {
+    "id": "OL654092W",
+    "title": "The English works of Thomas Hobbes of Malmesbury",
+    "description": "What you actually get if you click on 'read' for this item is vol. 3 of Molesworth's collection, which is comprised of 'Leviathan' and nothing else.",
+    "authorId": "OL50870A"
+  },
+  {
+    "id": "OL654090W",
+    "title": "De cive",
+    "description": null,
+    "authorId": "OL50870A"
+  },
+  {
+    "id": "OL99844W",
+    "title": "Kritik der reinen Vernunft",
+    "description": null,
+    "authorId": "OL18074A"
+  },
+  {
+    "id": "OL99843W",
+    "title": "Grundlegung zur Metaphysik der Sitten",
+    "description": null,
+    "authorId": "OL18074A"
+  },
+  {
+    "id": "OL99842W",
+    "title": "Kritik der praktischen Vernunft",
+    "description": null,
+    "authorId": "OL18074A"
+  },
+  {
+    "id": "OL30310W",
+    "title": "A theory of justice",
+    "description": null,
+    "authorId": "OL27530A"
+  },
+  {
+    "id": "OL30308W",
+    "title": "Political liberalism",
+    "description": null,
+    "authorId": "OL27530A"
+  },
+  {
+    "id": "OL1068165W",
+    "title": "On Liberty",
+    "description": null,
+    "authorId": "OL108289A"
+  },
+  {
+    "id": "OL1068228W",
+    "title": "Utilitarianism",
+    "description": null,
+    "authorId": "OL108289A"
+  },
+  {
+    "id": "OL1068185W",
+    "title": "Principles of political economy",
+    "description": null,
+    "authorId": "OL108289A"
+  },
+  {
+    "id": "OL80609W",
+    "title": "Du contrat social",
+    "description": null,
+    "authorId": "OL29048A"
+  },
+  {
+    "id": "OL80743W",
+    "title": "Émile",
+    "description": null,
+    "authorId": "OL29048A"
+  },
+  {
+    "id": "OL15369804W",
+    "title": "Confessions",
+    "description": "*Confessions* is an autobiographical book by Jean-Jacques Rousseau. It covers his life up until fifty-three years of age, so until 1765. This autobiography was completed in 1769, but was actually not published until 1782. It is a unique autobiography in the fact that Rousseau wrote about even his most humiliating moments. Rousseau also writes about how he \"disposed\" of his five children, whom he had out of marriage with Theresa Levasseur.",
+    "authorId": "OL29048A"
+  },
+  {
+    "id": "OL678515W",
+    "title": "Phänomenologie des Geistes",
+    "description": null,
+    "authorId": "OL53216A"
+  },
+  {
+    "id": "OL678564W",
+    "title": "Wissenschaft der Logik",
+    "description": null,
+    "authorId": "OL53216A"
+  },
+  {
+    "id": "OL678262W",
+    "title": "The philosophy of Hegel",
+    "description": null,
+    "authorId": "OL53216A"
+  },
+  {
+    "id": "OL678428W",
+    "title": "Grundlinien der Philosophie des Rechts",
+    "description": null,
+    "authorId": "OL53216A"
+  }
+]
