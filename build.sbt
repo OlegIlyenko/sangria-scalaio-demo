@@ -19,6 +19,8 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % "0.9.3",
   "io.circe" %% "circe-optics" % "0.9.3",
 
+  "com.pauldijou" %% "jwt-circe" % "0.19.0",
+
   "com.typesafe.slick" %% "slick" % "3.2.3",
   "com.h2database" % "h2" % "1.4.197",
   "org.slf4j" % "slf4j-nop" % "1.7.21",

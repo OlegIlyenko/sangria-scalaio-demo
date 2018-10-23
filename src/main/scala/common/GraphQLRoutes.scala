@@ -8,6 +8,7 @@ import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport._
 import io.circe._
 import io.circe.optics.JsonPath._
 import io.circe.parser._
+import io.circe.generic.auto._
 
 import scala.util.{Failure, Success}
 import scala.concurrent.{ExecutionContext, Future}
@@ -19,8 +20,8 @@ import common.GraphQLRequestUnmarshaller.{explicitlyAccepts, _}
 import sangria.execution.{ErrorWithResolver, MaxQueryDepthReachedError, QueryAnalysisError, QueryReducingError}
 
 object GraphQLRoutes {
-  def route(executeFn: (Document, Option[String], Json, Boolean) ⇒ Future[Json])(implicit ex: ExecutionContext): Route =
-    optionalHeaderValueByName("X-Apollo-Tracing") { tracing ⇒
+  def route(executeFn: (Document, Option[String], Json, Option[AuthToken], Boolean) ⇒ Future[Json])(implicit ex: ExecutionContext): Route =
+    (optionalHeaderValueByName("X-Apollo-Tracing") & optionalJwtToken("secret")) { (tracing, authToken) ⇒
       path("graphql") {
         get {
           explicitlyAccepts(`text/html`) {
@@ -31,8 +32,8 @@ object GraphQLRoutes {
               case Success(ast) ⇒
                 variables.map(parse) match {
                   case Some(Left(error)) ⇒ complete(BadRequest, formatError(error))
-                  case Some(Right(json)) ⇒ executeGraphQL(executeFn, ast, operationName, json, tracing.isDefined)
-                  case None ⇒ executeGraphQL(executeFn, ast, operationName, Json.obj(), tracing.isDefined)
+                  case Some(Right(json)) ⇒ executeGraphQL(executeFn, ast, operationName, json, tracing.isDefined, authToken)
+                  case None ⇒ executeGraphQL(executeFn, ast, operationName, Json.obj(), tracing.isDefined, authToken)
                 }
               case Failure(error) ⇒ complete(BadRequest, formatError(error))
             }
@@ -49,8 +50,8 @@ object GraphQLRoutes {
                 case Some(Success(ast)) ⇒
                   variablesStr.map(parse) match {
                     case Some(Left(error)) ⇒ complete(BadRequest, formatError(error))
-                    case Some(Right(json)) ⇒ executeGraphQL(executeFn, ast, operationName, json, tracing.isDefined)
-                    case None ⇒ executeGraphQL(executeFn, ast, operationName, root.variables.json.getOption(body) getOrElse Json.obj(), tracing.isDefined)
+                    case Some(Right(json)) ⇒ executeGraphQL(executeFn, ast, operationName, json, tracing.isDefined, authToken)
+                    case None ⇒ executeGraphQL(executeFn, ast, operationName, root.variables.json.getOption(body) getOrElse Json.obj(), tracing.isDefined, authToken)
                   }
                 case Some(Failure(error)) ⇒ complete(BadRequest, formatError(error))
                 case None ⇒ complete(BadRequest, formatError("No query to execute"))
@@ -59,26 +60,31 @@ object GraphQLRoutes {
             entity(as[Document]) { document ⇒
               variablesParam.map(parse) match {
                 case Some(Left(error)) ⇒ complete(BadRequest, formatError(error))
-                case Some(Right(json)) ⇒ executeGraphQL(executeFn, document, operationNameParam, json, tracing.isDefined)
-                case None ⇒ executeGraphQL(executeFn, document, operationNameParam, Json.obj(), tracing.isDefined)
+                case Some(Right(json)) ⇒ executeGraphQL(executeFn, document, operationNameParam, json, tracing.isDefined, authToken)
+                case None ⇒ executeGraphQL(executeFn, document, operationNameParam, Json.obj(), tracing.isDefined, authToken)
               }
             }
           }
         }
       }
     } ~
+    (get & pathPrefix("assets")) {
+      getFromResourceDirectory("assets")
+    } ~
     (get & pathEndOrSingleSlash) {
       redirect("/graphql", PermanentRedirect)
     }
 
   def executeGraphQL(
-      executeFn: (Document, Option[String], Json, Boolean) ⇒ Future[Json],
-      query: Document,
-      operationName: Option[String],
-      variables: Json,
-      tracing: Boolean)(implicit ex: ExecutionContext) =
+    executeFn: (Document, Option[String], Json, Option[AuthToken], Boolean) ⇒ Future[Json],
+    query: Document,
+    operationName: Option[String],
+    variables: Json,
+    tracing: Boolean,
+    authToken: Option[Json]
+  )(implicit ex: ExecutionContext) =
     complete(
-      executeFn(query, operationName, if (variables.isNull) Json.obj() else variables, tracing)
+      executeFn(query, operationName, if (variables.isNull) Json.obj() else variables, authToken.flatMap(_.as[AuthToken].toOption), tracing)
         .map(OK → _)
         .recover {
           case QueryReducingError(error: MaxQueryDepthReachedError, _) ⇒ BadRequest → formatError(error.getMessage)

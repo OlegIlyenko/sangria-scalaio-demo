@@ -19,8 +19,7 @@ object CustomScalars {
 
   implicit val LocalDateType = ScalarType[LocalDate]("Date",
     description = Some("Represents local date. Serialized as ISO-formatted string."),
-    coerceOutput = (d, _) ⇒
-      d.format(DateTimeFormatter.ISO_DATE),
+    coerceOutput = (d, _) ⇒ d.format(DateTimeFormatter.ISO_DATE),
     coerceUserInput = {
       case s: String ⇒ parseDate(s)
       case _ ⇒ Left(DateCoercionViolation)

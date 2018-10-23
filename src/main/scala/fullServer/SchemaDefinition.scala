@@ -1,5 +1,6 @@
 package fullServer
 
+import common.AuthToken
 import sangria.schema._
 import sangria.macros.derive._
 import model._
@@ -28,6 +29,14 @@ object SchemaDefinition {
   val BookSortingArg = Argument("sortBy", OptionInputType(BookSortingType))
   val TitleFilterArg = Argument("title", OptionInputType(StringType))
 
+  val MeType = ObjectType("Me", fields[AppContext, AuthToken](
+    Field("name", StringType, Some("The name of authenticated user"),
+      resolve = c ⇒ c.value.userName),
+
+    Field("favouriteBooks", ListType(BookType),
+      complexity = constantPrice(10),
+      resolve = c ⇒ c.ctx.bookFetcher.deferSeq(c.value.books))))
+
   val QueryType = ObjectType("Query", fields[AppContext, Unit](
     Field("books", ListType(BookType),
       description = Some("Gives the list of books sorted and filtered based on the arguments"),
@@ -49,7 +58,11 @@ object SchemaDefinition {
     Field("author", OptionType(AuthorType),
       arguments = IdArg :: Nil,
       complexity = constantPrice(10),
-      resolve = c ⇒ c.ctx.authors.author(c arg IdArg))))
+      resolve = c ⇒ c.ctx.authors.author(c arg IdArg)),
+
+    Field("me", OptionType(MeType),
+      tags = Authorized :: Nil,
+      resolve = c ⇒ c.ctx.authToken)))
 
   val BookInputType = deriveInputObjectType[Book](
     InputObjectTypeName("BookInput"))
