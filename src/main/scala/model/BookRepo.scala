@@ -5,8 +5,8 @@ import scala.concurrent.Future
 case class Book(
   id: String,
   title: String,
-  description: Option[String],
-  authorId: String)
+  authorId: String,
+  description: Option[String] = None)
 
 trait BookRepo {
   def allBooks(limit: Int, offset: Int, sorting: Option[BookSorting.Value], title: Option[String]): Future[Seq[Book]]

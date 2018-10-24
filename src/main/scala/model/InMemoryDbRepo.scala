@@ -75,7 +75,7 @@ object InMemoryDbRepo {
 
     def author = foreignKey("AUTHOR_FK", authorId, Authors)(_.id)
 
-    def * = (id, title, description, authorId) <> ((Book.apply _).tupled, Book.unapply)
+    def * = (id, title, authorId, description) <> ((Book.apply _).tupled, Book.unapply)
   }
 
   val Books = TableQuery[BookTable]
