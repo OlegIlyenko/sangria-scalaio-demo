@@ -23,9 +23,11 @@ You can run queries interactively using [graphql-playground](https://github.com/
 This demo contains several packages under `src/main/scala`:
 
 * **common** - common definitions that are used by all examples. It also contains some plumbing (like full HTTP routing) to make more advanced examples more simple.
-* **demos** - step by step walkthrough from the most basic examples to more advanced GraphQL servers that use DB, auth, etc.
+* **demos** - step by step walkthrough from the most basic examples to more advanced GraphQL servers that use DB, auth, etc. Every demo object (like `Demo1Basics`) is self-contained and contains `main` method (extends `App`), so you can run it.
 * **finalServer** - the final server implementation that includes all demonstrated elements
 * **model** - defines model for the `Book` and `Author` case classes as well as repositories (including SQL-based implementation)
+
+I would also recommend to explore the `/src/test/scala` folder - it contains several example tests.
 
 ### Demo Database 
 
