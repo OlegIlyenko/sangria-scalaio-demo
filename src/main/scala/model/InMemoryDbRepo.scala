@@ -58,7 +58,6 @@ class InMemoryDbRepo(db: Database)(implicit ec: ExecutionContext) extends BookRe
 
     db.run(withSorting.result)
   }
-
 }
 
 /** Slick table definitions and data loading */

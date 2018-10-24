@@ -18,7 +18,7 @@ sbt ~reStart
 
 You can run queries interactively using [graphql-playground](https://github.com/prisma/graphql-playground) by opening [http://localhost:8080](http://localhost:8080) in a browser or query the `/graphql` endpoint directly. The HTTP endpoint follows [GraphQL best practices for handling the HTTP requests](http://graphql.org/learn/serving-over-http/#http-methods-headers-and-body).
 
-### Code structure
+### Code Structure
 
 This demo contains several packages under `src/main/scala`:
 
@@ -27,7 +27,46 @@ This demo contains several packages under `src/main/scala`:
 * **finalServer** - the final server implementation that includes all demonstrated elements
 * **model** - defines model for the `Book` and `Author` case classes as well as repositories (including SQL-based implementation)
 
-### GraphQL schema
+### Demo Database 
+
+The demo uses a simple H2 in-memory database (it would be re-created automatically when server starts). 
+
+<details>
+  <summary>DB schema DDL</summary>
+  
+```
+create table "BOOKS" (
+  "BOOK_ID" VARCHAR NOT NULL PRIMARY KEY,
+  "TITLE" VARCHAR NOT NULL,
+  "AUTHOR_ID" VARCHAR NOT NULL,
+  "description" VARCHAR)
+  
+alter table "BOOKS" 
+  add constraint "AUTHOR_FK" foreign key("AUTHOR_ID") 
+  references "AUTHORS"("AUTHOR_ID") on update NO ACTION on delete NO ACTION
+  
+create table "AUTHORS" (
+  "AUTHOR_ID" VARCHAR NOT NULL PRIMARY KEY,
+  "NAME" VARCHAR NOT NULL,
+  "BIO" VARCHAR,
+  "BIRTH_DATE" DATE NOT NULL,
+  "DEATH_DATE" DATE)
+```
+</details>
+
+The example book data was taken from [Open Library](https://openlibrary.org/).  
+
+### JWT Auth
+
+In order to demonstrate the authentication and authorization, demo uses JWT tokens with basic OAuth bearer `Authorization` header.
+
+If you would like to try out the examples (in particular `me` field), you can use following header:
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkpvaG4gRG9lIiwiYm9va3MiOlsiT0wzMDMxMFciLCJPTDk5ODQzVyJdfQ.ffqCpfgWrY40k8JWj56mUpvW0ZfWLhTqrLHwMZeXgXc
+```   
+
+### GraphQL Schema
 
 The demo project implements following schema:
 
