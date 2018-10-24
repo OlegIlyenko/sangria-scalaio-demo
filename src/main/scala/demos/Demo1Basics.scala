@@ -2,7 +2,8 @@ package demos
 
 import language.postfixOps
 
-import finalServer.MyTest.Book
+import model.Book
+
 import sangria.schema._
 import sangria.macros._
 import sangria.execution._
@@ -10,7 +11,6 @@ import sangria.marshalling.circe._
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /** Most basic example of GraphQL Schema definition and query execution */
