@@ -492,9 +492,49 @@
       loadingWrapper.classList.add('fadeOut');
       const root = document.getElementById('root');
       root.classList.add('playgroundIn');
-      GraphQLPlayground.init(root, {
-        // you can add more options here
-      })
+
+      const demo = true
+
+      const endpoint = "http://" + window.location.host + "/graphql"
+      var tabs = [
+        {
+          name: "Demo: Basic",
+          endpoint,
+          query:
+`query Foo {
+  me {
+    name
+  }
+}`,
+          headers: {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik9sZWcgSWx5ZW5rbyIsImJvb2tzIjpbIk9MMzAzMTBXIiwiT0w5OTg0M1ciXX0.k4MOSGhh_55nFOimhX97PKa4c5lZguLN4UQQZ2jf9Iw"}
+        }, {
+          name: "Demo: Mutations",
+          endpoint,
+          query:
+`query Foo {
+  books {
+    title
+  }
+}`,
+          headers: {"Foo": "bar!"}
+        }
+      ]
+
+      const settings = {
+        "general.betaUpdates": false,
+        "editor.cursorShape": "line",
+        "editor.fontSize": 16,
+        "editor.fontFamily": "'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace",
+        "editor.theme": "light",
+        "editor.reuseHeaders": true,
+        "prettier.printWidth": 80,
+        "request.credentials": "omit",
+        "tracing.hideTracingResponse": true
+      }
+
+      const config = demo ? {endpoint, tabs, settings} : {}
+
+      GraphQLPlayground.init(root, config)
     })
   </script>
 

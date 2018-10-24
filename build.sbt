@@ -6,6 +6,8 @@ description := "A demo project used in my scala.io talk."
 scalaVersion := "2.12.7"
 scalacOptions ++= Seq("-deprecation", "-feature")
 
+mainClass := Some("finalServer.Server")
+
 libraryDependencies ++= Seq(
   "org.sangria-graphql" %% "sangria" % "1.4.2",
   "org.sangria-graphql" %% "sangria-slowlog" % "0.1.8",

@@ -1,5 +1,5 @@
 import common.AuthToken
-import fullServer.{AppContext, AuthException, AuthMiddleware}
+import finalServer.{AppContext, AuthException, AuthMiddleware}
 import org.scalatest.{Matchers, WordSpec}
 import sangria.ast.Document
 import sangria.macros._
@@ -11,7 +11,7 @@ import io.circe.parser._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import fullServer.SchemaDefinition.schema
+import finalServer.SchemaDefinition.schema
 import model.InMemoryDbRepo
 
 class SchemaSpec extends WordSpec with Matchers {

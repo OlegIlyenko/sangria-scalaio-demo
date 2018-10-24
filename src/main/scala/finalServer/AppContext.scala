@@ -1,4 +1,4 @@
-package fullServer
+package finalServer
 
 import common.AuthToken
 import sangria.execution.deferred._

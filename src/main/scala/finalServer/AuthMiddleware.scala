@@ -1,4 +1,4 @@
-package fullServer
+package finalServer
 
 import sangria.execution.{FieldTag, MiddlewareBeforeField, MiddlewareQueryContext}
 import sangria.schema.Context

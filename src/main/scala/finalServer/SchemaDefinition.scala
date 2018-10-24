@@ -1,4 +1,4 @@
-package fullServer
+package finalServer
 
 import common.AuthToken
 import sangria.schema._
@@ -61,6 +61,7 @@ object SchemaDefinition {
       resolve = c ⇒ c.ctx.authors.author(c arg IdArg)),
 
     Field("me", OptionType(MeType),
+      description = Some("Information about authenticated user. Requires OAuth token."),
       tags = Authorized :: Nil,
       resolve = c ⇒ c.ctx.authToken)))
 
@@ -78,6 +79,8 @@ object SchemaDefinition {
       resolve = c ⇒ c.ctx.books.deleteBook(c arg IdArg))))
 
   val schema = Schema(QueryType, Some(MutationType))
+
+  println(schema.renderPretty)
 
   def constantPrice(num: Double): Option[(AppContext, Args, Double) ⇒ Double] =
     Some((_, _, _) ⇒ num)

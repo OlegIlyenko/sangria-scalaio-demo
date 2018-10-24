@@ -4,7 +4,12 @@ import java.time.LocalDate
 
 import scala.concurrent.Future
 
-case class Author(id: String, name: String, bio: Option[String], birthDate: LocalDate, deathDate: Option[LocalDate])
+case class Author(
+  id: String,
+  name: String,
+  bio: Option[String],
+  birthDate: LocalDate,
+  deathDate: Option[LocalDate])
 
 trait AuthorRepo {
   def allAuthors(limit: Int, offset: Int): Future[Seq[Author]]

@@ -2,11 +2,11 @@ package model
 
 import scala.concurrent.Future
 
-case class Book(id: String, title: String, description: Option[String], authorId: String)
-
-object BookSorting extends Enumeration {
-  val Id, Title = Value
-}
+case class Book(
+  id: String,
+  title: String,
+  description: Option[String],
+  authorId: String)
 
 trait BookRepo {
   def allBooks(limit: Int, offset: Int, sorting: Option[BookSorting.Value], title: Option[String]): Future[Seq[Book]]
@@ -17,3 +17,8 @@ trait BookRepo {
   def addBook(book: Book): Future[Book]
   def deleteBook(id: String): Future[Option[Book]]
 }
+
+object BookSorting extends Enumeration {
+  val Id, Title = Value
+}
+

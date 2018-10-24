@@ -1,4 +1,4 @@
-package fullServer
+package finalServer
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
@@ -9,7 +9,7 @@ import sangria.slowlog.SlowLog
 import common._
 import model.InMemoryDbRepo
 
-object FullServer extends App {
+object Server extends App {
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
 
