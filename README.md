@@ -54,11 +54,12 @@ create table "AUTHORS" (
 ```
 </details>
 
+
 The example book data was taken from [Open Library](https://openlibrary.org/).  
 
 ### JWT Auth
 
-In order to demonstrate the authentication and authorization, demo uses JWT tokens with basic OAuth bearer `Authorization` header.
+In order to demonstrate the authentication and authorization, demo uses [JWT](https://jwt.io/) tokens with basic OAuth bearer `Authorization` header.
 
 If you would like to try out the examples (in particular `me` field), you can use following header:
 
