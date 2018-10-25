@@ -38,5 +38,5 @@ object Server extends App {
       deferredResolver = context.deferredResolver)
   }
 
-  Http().bindAndHandle(route, "0.0.0.0", sys.props.get("http.port").fold(8080)(_.toInt))
+  Http().bindAndHandle(route, "0.0.0.0", 8080)
 }

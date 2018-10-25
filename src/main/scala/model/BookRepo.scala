@@ -9,7 +9,12 @@ case class Book(
   description: Option[String] = None)
 
 trait BookRepo {
-  def allBooks(limit: Int, offset: Int, sorting: Option[BookSorting.Value], title: Option[String]): Future[Seq[Book]]
+  def allBooks(
+    limit: Int = 100,
+    offset: Int = 0,
+    sorting: Option[BookSorting.Value] = None,
+    title: Option[String] = None): Future[Seq[Book]]
+
   def book(id: String): Future[Option[Book]]
   def books(ids: Seq[String]): Future[Seq[Book]]
   def booksByAuthors(authorIds: Seq[String]): Future[Seq[Book]]

@@ -20,7 +20,7 @@ class InMemoryDbRepo(db: Database)(implicit ec: ExecutionContext) extends BookRe
   import InMemoryDbRepo._
 
   def book(id: String) =
-    db.run(Books.filter(_.id === id).result.headOption)
+    books(Seq(id)).map(_.headOption)
 
   def books(ids: Seq[String]) =
     db.run(Books.filter(_.id inSet ids).result)
@@ -38,7 +38,7 @@ class InMemoryDbRepo(db: Database)(implicit ec: ExecutionContext) extends BookRe
     } yield book
 
   def author(id: String) =
-    db.run(Authors.filter(_.id === id).result.headOption)
+    authors(Seq(id)).map(_.headOption)
 
   def authors(ids: Seq[String]) =
     db.run(Authors.filter(_.id inSet ids).result)
@@ -47,16 +47,17 @@ class InMemoryDbRepo(db: Database)(implicit ec: ExecutionContext) extends BookRe
     db.run(Authors.drop(offset).take(limit).result)
 
   def allBooks(limit: Int, offset: Int, sorting: Option[BookSorting.Value], title: Option[String]) = {
-    val initial = Books.drop(offset).take(limit)
-
-    val withFilter = title.fold(initial)(t ⇒ initial.filter(_.title like t))
+    val withFilter = title match {
+      case Some(t) ⇒ Books.filter(_.title like (s"%$t%"))
+      case None ⇒ Books
+    }
 
     val withSorting = sorting.fold(withFilter) {
       case BookSorting.Id ⇒ withFilter.sortBy(_.id.asc)
       case BookSorting.Title ⇒ withFilter.sortBy(_.title.asc)
     }
 
-    db.run(withSorting.result)
+    db.run(withSorting.drop(offset).take(limit).result)
   }
 }
 
