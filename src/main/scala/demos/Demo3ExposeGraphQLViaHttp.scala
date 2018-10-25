@@ -12,7 +12,7 @@ import sangria.schema._
 
 import scala.language.postfixOps
 
-/** Let's expose out GraphQL schema via HTTP API */
+/** Let's expose our GraphQL schema via HTTP API */
 object Demo3ExposeGraphQLViaHttp extends App {
 
   // Define some data
