@@ -13,7 +13,7 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 /**
-  * Using `deriveObjectType` to derive GraphQl object type
+  * Using `deriveObjectType` to derive GraphQL object type
   * based on the `Book` case class
   */
 object Demo2MacroDerivation extends App {

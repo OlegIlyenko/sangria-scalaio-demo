@@ -36,7 +36,7 @@ the project contains step-by-step demonstration of various GraphQL and Sangria c
 top of previous steps:
 
 1. Most basic example of GraphQL Schema definition and query execution ([Demo1Basics.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo1Basics.scala))    
-1. Using `deriveObjectType` to derive GraphQl object type based on the `Book` case class ([Demo2MacroDerivation.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo2MacroDerivation.scala))    
+1. Using `deriveObjectType` to derive GraphQL object type based on the `Book` case class ([Demo2MacroDerivation.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo2MacroDerivation.scala))    
 1. Exposing the GraphQL schema via HTTP API ([Demo3ExposeGraphQLViaHttp.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo3ExposeGraphQLViaHttp.scala))    
 1. Use an SQL database to load the book and author data returned by GraphQL API ([Demo4AddingDatabase.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo4AddingDatabase.scala))    
 1. Use field arguments to provide pagination, sorting and filtering ([Demo5PaginationSortingFiltering.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo5PaginationSortingFiltering.scala))    
