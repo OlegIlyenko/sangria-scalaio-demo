@@ -89,7 +89,7 @@ object Demo10Auth extends App {
   }
 
   val route = GraphQLRoutes.route { (query, operationName, variables, authToken, _) ⇒
-    val context = new AppContext(repo, repo, authToken)
+    val context = AppContext(repo, repo, authToken)
 
     Executor.execute(schema, query, context,
       variables = variables,

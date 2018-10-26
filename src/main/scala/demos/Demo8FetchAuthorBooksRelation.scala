@@ -31,7 +31,6 @@ object Demo8FetchAuthorBooksRelation extends App {
       DeprecateField("authorId", "Please use `author` field instead."),
       AddFields(
         Field("author", OptionType(AuthorType),
-          complexity = constantPrice(10),
           resolve = c ⇒ authorFetcher.defer(c.value.authorId))))
 
   val booksByAuthor = Relation[Book, String]("booksByAuthor", book ⇒ Seq(book.authorId))
@@ -45,7 +44,6 @@ object Demo8FetchAuthorBooksRelation extends App {
   implicit lazy val AuthorType = deriveObjectType[Unit, Author](
     AddFields(
       Field("books", ListType(BookType),
-        complexity = constantPrice(10),
         resolve = c ⇒ bookFetcher.deferRelSeq(booksByAuthor, c.value.id))))
 
   implicit val BookSortingType = deriveEnumType[BookSorting.Value]()
