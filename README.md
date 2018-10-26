@@ -4,6 +4,10 @@
 
 A demo project that demonstrates a [GraphQL](https://graphql.org) API implemented with [sangria](https://github.com/sangria-graphql/sangria), [akka-http](https://github.com/akka/akka-http), [circe](https://github.com/circe/circe).
 
+### Presentation slides
+
+[![Presentation slides](https://olegilyenko.github.io/presentation-building-graphql-api-with-sangria-scalaio/assets/img/preview.png)](https://olegilyenko.github.io/presentation-building-graphql-api-with-sangria-scalaio/)
+
 ### Getting Started
 
 After starting the server with
