@@ -17,10 +17,13 @@ import finalServer.SchemaDefinition.constantPrice
 
 import scala.language.postfixOps
 
-/** Efficiently load author books information with Fetch API */
+/**
+  * Efficiently load author books information with Fetch API.
+  * This represents 1:m relationship between author and his/her books.
+  */
 object Demo8FetchAuthorBooksRelation extends App {
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
   val authorFetcher = Fetcher.caching(
     (ctx: BookRepo with AuthorRepo, ids: Seq[String]) ⇒
@@ -33,8 +36,10 @@ object Demo8FetchAuthorBooksRelation extends App {
         Field("author", OptionType(AuthorType),
           resolve = c ⇒ authorFetcher.defer(c.value.authorId))))
 
+  // NEW: define author-book relation
   val booksByAuthor = Relation[Book, String]("booksByAuthor", book ⇒ Seq(book.authorId))
 
+  // NEW: define fetcher to load books by author ID in batches
   val bookFetcher = Fetcher.relCaching(
     (ctx: BookRepo with AuthorRepo, ids: Seq[String]) ⇒
       ctx.books(ids),
@@ -42,6 +47,7 @@ object Demo8FetchAuthorBooksRelation extends App {
       ctx.booksByAuthors(relIds(booksByAuthor)))(HasId(_.id))
 
   implicit lazy val AuthorType = deriveObjectType[Unit, Author](
+    // NEW: add `books` field & defer its loading to fetcher
     AddFields(
       Field("books", ListType(BookType),
         resolve = c ⇒ bookFetcher.deferRelSeq(booksByAuthor, c.value.id))))
@@ -54,7 +60,7 @@ object Demo8FetchAuthorBooksRelation extends App {
 
   val schema = Schema(QueryType)
 
-  // Create akka-http server and expose GraphQL route
+  // STEP: Create akka-http server and expose GraphQL route
 
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
@@ -67,6 +73,7 @@ object Demo8FetchAuthorBooksRelation extends App {
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName,
+      // NEW: add `bookFetcher` to a `DeferredResolver`
       deferredResolver = DeferredResolver.fetchers(authorFetcher, bookFetcher),
       middleware = if (tracing) SlowLog.apolloTracing :: Nil else Nil)
   }

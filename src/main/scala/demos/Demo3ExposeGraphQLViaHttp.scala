@@ -15,13 +15,13 @@ import scala.language.postfixOps
 /** Let's expose our GraphQL schema via HTTP API */
 object Demo3ExposeGraphQLViaHttp extends App {
 
-  // Define some data
+  // STEP: Define some data
 
   val books = List(
     Book("1", "Harry Potter and the Philosopher's Stone", "J. K. Rowling"),
-    Book("1", "A Game of Thrones", "George R. R. Martin"))
+    Book("2", "A Game of Thrones", "George R. R. Martin"))
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
   val BookType = deriveObjectType[Unit, Book]()
 
@@ -30,18 +30,22 @@ object Demo3ExposeGraphQLViaHttp extends App {
 
   val schema = Schema(QueryType)
 
-  // Create akka-http server and expose GraphQL route
+  // STEP: Create akka-http server and expose GraphQL route
 
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
 
   import system.dispatcher
 
+  // NEW: define GraphQL route
   val route = GraphQLRoutes.route { (query, operationName, variables, _, _) ⇒
+
+    // NEW: execute GraphQL query comig from HTTP request
     Executor.execute(schema, query,
       variables = variables,
       operationName = operationName)
   }
 
+  // NEW: start an HTTP server and serve the GraphQL route
   Http().bindAndHandle(route, "0.0.0.0", 8080)
 }

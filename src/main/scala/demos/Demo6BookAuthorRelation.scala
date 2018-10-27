@@ -17,10 +17,12 @@ import scala.language.postfixOps
 /** Representing book-author relation with an object type field */
 object Demo6BookAuthorRelation extends App {
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
+  // NEW: parametrize derived GraphQL object type
   implicit lazy val BookType: ObjectType[AuthorRepo, Book] =
     deriveObjectType[AuthorRepo, Book](
+      // NEW: deprecate `authorId` & add `author` field
       DeprecateField("authorId", "Please use `author` field instead."),
       AddFields(
         Field("author", OptionType(AuthorType),
@@ -36,7 +38,7 @@ object Demo6BookAuthorRelation extends App {
 
   val schema = Schema(QueryType)
 
-  // Create akka-http server and expose GraphQL route
+  // STEP: Create akka-http server and expose GraphQL route
 
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
@@ -49,6 +51,7 @@ object Demo6BookAuthorRelation extends App {
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName,
+      // NEW: add middleware to show tracing info in the playground
       middleware = if (tracing) SlowLog.apolloTracing :: Nil else Nil)
   }
 

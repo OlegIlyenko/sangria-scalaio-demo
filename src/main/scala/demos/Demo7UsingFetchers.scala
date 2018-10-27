@@ -18,8 +18,9 @@ import scala.language.postfixOps
 /** Efficiently load author information with Fetch API */
 object Demo7UsingFetchers extends App {
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
+  // NEW: add fetcher to load authors in batch
   val authorFetcher = Fetcher.caching(
     (ctx: AuthorRepo, ids: Seq[String]) ⇒
       ctx.authors(ids))(HasId(_.id))
@@ -29,6 +30,7 @@ object Demo7UsingFetchers extends App {
       DeprecateField("authorId", "Please use `author` field instead."),
       AddFields(
         Field("author", OptionType(AuthorType),
+          // NEW: use fetcher to defer loading author by ID
           resolve = c ⇒ authorFetcher.defer(c.value.authorId))))
 
   implicit lazy val AuthorType = deriveObjectType[Unit, Author]()
@@ -41,7 +43,7 @@ object Demo7UsingFetchers extends App {
 
   val schema = Schema(QueryType)
 
-  // Create akka-http server and expose GraphQL route
+  // STEP: Create akka-http server and expose GraphQL route
 
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
@@ -54,6 +56,7 @@ object Demo7UsingFetchers extends App {
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName,
+      // NEW: provide fetcher to load object in batches during execution
       deferredResolver = DeferredResolver.fetchers(authorFetcher),
       middleware = if (tracing) SlowLog.apolloTracing :: Nil else Nil)
   }

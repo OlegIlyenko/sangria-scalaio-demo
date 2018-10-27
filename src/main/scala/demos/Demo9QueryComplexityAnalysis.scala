@@ -19,7 +19,7 @@ import scala.language.postfixOps
 /** Guard GraphQL API from abuse with static query complexity analysis */
 object Demo9QueryComplexityAnalysis extends App {
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
   val authorFetcher = Fetcher.caching(
     (ctx: BookRepo with AuthorRepo, ids: Seq[String]) ⇒
@@ -30,6 +30,7 @@ object Demo9QueryComplexityAnalysis extends App {
       DeprecateField("authorId", "Please use `author` field instead."),
       AddFields(
         Field("author", OptionType(AuthorType),
+          // NEW: define a small static costs for a fetcher-based field
           complexity = constantPrice(10),
           resolve = c ⇒ authorFetcher.defer(c.value.authorId))))
 
@@ -44,6 +45,7 @@ object Demo9QueryComplexityAnalysis extends App {
   implicit lazy val AuthorType = deriveObjectType[Unit, Author](
     AddFields(
       Field("books", ListType(BookType),
+        // NEW: define a small static costs for a fetcher-based field
         complexity = constantPrice(10),
         resolve = c ⇒ bookFetcher.deferRelSeq(booksByAuthor, c.value.id))))
 
@@ -57,13 +59,15 @@ object Demo9QueryComplexityAnalysis extends App {
   val QueryType = ObjectType("Query", fields[BookRepo with AuthorRepo, Unit](
     Field("books", ListType(BookType),
       arguments = LimitArg :: OffsetArg :: BookSortingArg :: TitleFilterArg :: Nil,
+      // NEW: define complexity of `books` field based on formula:
+      // NEW: <cost of DB access> + <limit> * <child sub-query cost>
       complexity = Some((_, args, child) ⇒ 100 + args.arg(LimitArg) * child),
       resolve = c ⇒ c.withArgs(LimitArg, OffsetArg, BookSortingArg, TitleFilterArg)(
         c.ctx.allBooks))))
 
   val schema = Schema(QueryType)
 
-  // Create akka-http server and expose GraphQL route
+  // STEP: Create akka-http server and expose GraphQL route
 
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
@@ -72,6 +76,8 @@ object Demo9QueryComplexityAnalysis extends App {
 
   val repo = InMemoryDbRepo.createDatabase
 
+  // NEW: define query reducers to statically analyze the query and
+  // NEW: prevent complex queries from being executed
   val reducers = List(
     QueryReducer.rejectMaxDepth[Any](15),
     QueryReducer.rejectComplexQueries[Any](200, (complexity, _) ⇒
@@ -82,6 +88,7 @@ object Demo9QueryComplexityAnalysis extends App {
       variables = variables,
       operationName = operationName,
       deferredResolver = DeferredResolver.fetchers(authorFetcher, bookFetcher),
+      // NEW: provide the list of reducers for an execution
       queryReducers = reducers,
       middleware = if (tracing) SlowLog.apolloTracing :: Nil else Nil)
   }

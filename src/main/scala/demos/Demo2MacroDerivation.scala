@@ -18,15 +18,15 @@ import scala.language.postfixOps
   */
 object Demo2MacroDerivation extends App {
 
-  // Define some data
+  // STEP: Define some data
 
   val books = List(
     Book("1", "Harry Potter and the Philosopher's Stone", "J. K. Rowling"),
-    Book("1", "A Game of Thrones", "George R. R. Martin"))
+    Book("2", "A Game of Thrones", "George R. R. Martin"))
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
-  // NEW: We are using macro to derive the structure of a `Book` case class
+  // NEW: use macro to derive the structure of a `Book` case class
   val BookType = deriveObjectType[Unit, Book]()
 
   val QueryType = ObjectType("Query", fields[Unit, Unit](
@@ -34,7 +34,7 @@ object Demo2MacroDerivation extends App {
 
   val schema = Schema(QueryType)
 
-  // Execute a query
+  // STEP: Define a query
 
   val query =
     graphql"""
@@ -45,6 +45,8 @@ object Demo2MacroDerivation extends App {
         }
       }
     """
+
+  // STEP: Execute query against the schema
 
   val result = Executor.execute(schema, query)
 

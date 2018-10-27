@@ -17,13 +17,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 /** Most basic example of GraphQL Schema definition and query execution */
 object Demo1Basics extends App {
 
-  // Define some data
+  // STEP: Define some data
 
   val books = List(
     Book("1", "Harry Potter and the Philosopher's Stone", "J. K. Rowling"),
-    Book("1", "A Game of Thrones", "George R. R. Martin"))
+    Book("2", "A Game of Thrones", "George R. R. Martin"))
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
   val BookType = ObjectType("Book", fields[Unit, Book](
     Field("id", IDType, resolve = _.value.id),
@@ -35,7 +35,7 @@ object Demo1Basics extends App {
 
   val schema = Schema(QueryType)
 
-  // Execute a query
+  // STEP: Define a query
 
   val query =
     graphql"""
@@ -46,6 +46,8 @@ object Demo1Basics extends App {
         }
       }
     """
+
+  // STEP: Execute query against the schema
 
   val result: Future[Json] = Executor.execute(schema, query)
 

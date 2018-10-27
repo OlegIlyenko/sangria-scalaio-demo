@@ -20,14 +20,14 @@ import scala.language.postfixOps
 object Demo10Auth extends App {
 
   /*
-   For testing, you can use this HTTP header:
+    For testing, you can use this HTTP header:
 
     {
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik9sZWcgSWx5ZW5rbyIsImJvb2tzIjpbIk9MMzAzMTBXIiwiT0w5OTg0M1ciXX0.k4MOSGhh_55nFOimhX97PKa4c5lZguLN4UQQZ2jf9Iw"
     }
   */
 
-  // Define GraphQL Types & Schema
+  // STEP: Define GraphQL Types & Schema
 
   implicit lazy val BookType: ObjectType[AppContext, Book] =
     deriveObjectType[AppContext, Book](
@@ -43,6 +43,7 @@ object Demo10Auth extends App {
 
   implicit val BookSortingType = deriveEnumType[BookSorting.Value]()
 
+  // NEW: `Me` type that shows authorized user info
   val MeType = ObjectType("Me", fields[AppContext, AuthToken](
     Field("name", StringType, Some("The name of authenticated user"),
       resolve = c ⇒ c.value.userName),
@@ -63,14 +64,16 @@ object Demo10Auth extends App {
       resolve = c ⇒ c.withArgs(LimitArg, OffsetArg, BookSortingArg, TitleFilterArg)(
         c.ctx.books.allBooks)),
 
+    // NEW: define `me` field that requires authorization
     Field("me", OptionType(MeType),
       description = Some("Information about authenticated user. Requires OAuth token."),
+      // NEW: mark field with `Authorized` field tag
       tags = Authorized :: Nil,
       resolve = c ⇒ c.ctx.authToken)))
 
   val schema = Schema(QueryType)
 
-  // Create akka-http server and expose GraphQL route
+  // STEP: Create akka-http server and expose GraphQL route
 
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
@@ -84,11 +87,13 @@ object Demo10Auth extends App {
     QueryReducer.rejectComplexQueries[Any](200, (complexity, _) ⇒
       new IllegalStateException(s"Too complex query: $complexity/200")))
 
+  // NEW: define an exception handler & handle auth errors
   val exceptionHandler = ExceptionHandler {
     case (_, AuthException(message)) ⇒ HandledException(message)
   }
 
   val route = GraphQLRoutes.route { (query, operationName, variables, authToken, _) ⇒
+    // NEW: save OAuth token info in the context object
     val context = AppContext(repo, repo, authToken)
 
     Executor.execute(schema, query, context,
@@ -96,7 +101,9 @@ object Demo10Auth extends App {
       operationName = operationName,
       deferredResolver = context.deferredResolver,
       queryReducers = reducers,
+      // NEW: provide exception handler for an execution
       exceptionHandler = exceptionHandler,
+      // NEW: use middleware to prevent unauthorized access
       middleware = AuthMiddleware :: Nil)
   }
 

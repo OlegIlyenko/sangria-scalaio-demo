@@ -14,6 +14,12 @@ object AuthMiddleware extends MiddlewareBeforeField[AppContext] {
   def beforeQuery(context: MiddlewareQueryContext[AppContext, _, _]) = ()
   def afterQuery(queryVal: QueryVal, context: MiddlewareQueryContext[AppContext, _, _]) = ()
 
+  /**
+    * For any field that requires authorization
+    * (marked with `Authorized` field tag)
+    *  we would like to prevent field execution
+    *  if client have not provided valid OAuth token.
+    */
   def beforeField(queryVal: QueryVal, mctx: MiddlewareQueryContext[AppContext, _, _], c: Context[AppContext, _]) = {
     val requiresAuth = c.field.tags.contains(Authorized)
 
