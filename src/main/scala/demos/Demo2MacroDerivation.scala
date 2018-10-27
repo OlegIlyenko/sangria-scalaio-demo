@@ -26,6 +26,7 @@ object Demo2MacroDerivation extends App {
 
   // Define GraphQL Types & Schema
 
+  // NEW: We are using macro to derive the structure of a `Book` case class
   val BookType = deriveObjectType[Unit, Book]()
 
   val QueryType = ObjectType("Query", fields[Unit, Unit](
