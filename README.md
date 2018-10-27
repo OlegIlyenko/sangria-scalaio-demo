@@ -50,6 +50,13 @@ top of previous steps:
 1. Guard GraphQL API from abuse with static query complexity analysis ([Demo9QueryComplexityAnalysis.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo9QueryComplexityAnalysis.scala))    
 1. Securing GraphQL API with OAuth and JWT tokens ([Demo10Auth.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo10Auth.scala))    
 
+In each class you will find comments that highlight separate steps (with `// STEP: ...`)
+and things that are new in comparison with previous steps (with `// NEW: ...`). 
+If you add extra highlighting in the IDE (e.g. TODO highlighting in Intellij IDEA)
+you can get additional visual hints:
+
+![TODO highlighting in Intellij IDEA](https://olegilyenko.github.io/presentation-building-graphql-api-with-sangria-scalaio/assets/img/todo-highlighting.png)
+
 ### Demo Database 
 
 The demo uses a simple H2 in-memory database (it would be re-created automatically when server starts). 
