@@ -2,14 +2,15 @@ package demos
 
 import language.postfixOps
 
-import model.Book
+import io.circe.Json
 
+import model.Book
 import sangria.schema._
 import sangria.macros._
 import sangria.execution._
 import sangria.marshalling.circe._
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -46,7 +47,7 @@ object Demo1Basics extends App {
       }
     """
 
-  val result = Executor.execute(schema, query)
+  val result: Future[Json] = Executor.execute(schema, query)
 
   println(Await.result(result, 1 second))
 }
