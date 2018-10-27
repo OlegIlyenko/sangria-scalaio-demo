@@ -81,5 +81,5 @@ object SchemaDefinition {
   val schema = Schema(QueryType, Some(MutationType))
 
   def constantPrice(num: Double): Option[(Any, Args, Double) ⇒ Double] =
-    Some((_, _, _) ⇒ num)
+    Some((_, _, child) ⇒ child + num)
 }
