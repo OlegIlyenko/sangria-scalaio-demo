@@ -1,9 +1,5 @@
 package demos
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
-import common.GraphQLRoutes
 import model._
 import sangria.execution._
 import sangria.execution.deferred._
@@ -12,9 +8,10 @@ import sangria.marshalling.circe._
 import sangria.schema._
 import sangria.slowlog.SlowLog
 import common.CustomScalars._
+import common.GraphQLRoutes.simpleServer
 import finalServer.SchemaDefinition.constantPrice
 
-import scala.language.postfixOps
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /** Guard GraphQL API from abuse with static query complexity analysis */
 object Demo9QueryComplexityAnalysis extends App {
@@ -69,11 +66,6 @@ object Demo9QueryComplexityAnalysis extends App {
 
   // STEP: Create akka-http server and expose GraphQL route
 
-  implicit val system = ActorSystem("sangria-server")
-  implicit val materializer = ActorMaterializer()
-
-  import system.dispatcher
-
   val repo = InMemoryDbRepo.createDatabase
 
   // NEW: define query reducers to statically analyze the query and
@@ -83,7 +75,7 @@ object Demo9QueryComplexityAnalysis extends App {
     QueryReducer.rejectComplexQueries[Any](200, (complexity, _) ⇒
       new IllegalStateException(s"Too complex query: $complexity/200")))
 
-  val route = GraphQLRoutes.route { (query, operationName, variables, _, tracing) ⇒
+  simpleServer { (query, operationName, variables, _, tracing) ⇒
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName,
@@ -92,6 +84,4 @@ object Demo9QueryComplexityAnalysis extends App {
       queryReducers = reducers,
       middleware = if (tracing) SlowLog.apolloTracing :: Nil else Nil)
   }
-
-  Http().bindAndHandle(route, "0.0.0.0", 8080)
 }

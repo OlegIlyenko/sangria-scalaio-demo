@@ -1,17 +1,14 @@
 package demos
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
-import common.GraphQLRoutes
 import model._
 import sangria.execution._
 import sangria.macros.derive._
 import sangria.marshalling.circe._
 import sangria.schema._
 import common.CustomScalars._
+import common.GraphQLRoutes.simpleServer
 
-import scala.language.postfixOps
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * Use an SQL database to load the book and author
@@ -36,20 +33,13 @@ object Demo4AddingDatabase extends App {
 
   // STEP: Create akka-http server and expose GraphQL route
 
-  implicit val system = ActorSystem("sangria-server")
-  implicit val materializer = ActorMaterializer()
-
-  import system.dispatcher
-
   // NEW: crete new DB and repository
   val repo = InMemoryDbRepo.createDatabase
 
-  val route = GraphQLRoutes.route { (query, operationName, variables, _, _) ⇒
+  simpleServer { (query, operationName, variables, _, _) ⇒
     // NEW: provide a `repo` to a query executor
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName)
   }
-
-  Http().bindAndHandle(route, "0.0.0.0", 8080)
 }

@@ -1,9 +1,12 @@
 package common
 
+import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.MediaTypes._
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
+import akka.stream.ActorMaterializer
 import de.heikoseeberger.akkahttpcirce.ErrorAccumulatingCirceSupport._
 import io.circe._
 import io.circe.optics.JsonPath._
@@ -17,7 +20,7 @@ import sangria.ast.Document
 import sangria.parser._
 import sangria.marshalling.circe._
 import common.GraphQLRequestUnmarshaller.{explicitlyAccepts, _}
-import sangria.execution.{ErrorWithResolver, MaxQueryDepthReachedError, QueryAnalysisError, QueryReducingError}
+import sangria.execution._
 
 object GraphQLRoutes {
   def route(executeFn: (Document, Option[String], Json, Option[AuthToken], Boolean) ⇒ Future[Json])(implicit ex: ExecutionContext): Route =
@@ -74,6 +77,18 @@ object GraphQLRoutes {
     (get & pathEndOrSingleSlash) {
       redirect("/graphql", PermanentRedirect)
     }
+
+  def simpleServer(executeFn: (Document, Option[String], Json, Option[AuthToken], Boolean) ⇒ Future[Json]) = {
+    implicit val system = ActorSystem("sangria-server")
+    implicit val materializer = ActorMaterializer()
+
+    import system.dispatcher
+
+    val route = GraphQLRoutes.route(executeFn)
+
+    Http().bindAndHandle(route, "0.0.0.0", 8080).foreach(_ ⇒
+      println("Server started on port 8080"))
+  }
 
   def executeGraphQL(
     executeFn: (Document, Option[String], Json, Option[AuthToken], Boolean) ⇒ Future[Json],

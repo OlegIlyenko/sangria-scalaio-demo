@@ -1,10 +1,5 @@
 package demos
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
-import common.GraphQLRoutes
-import finalServer.AppContext
 import model._
 import sangria.execution._
 import sangria.execution.deferred._
@@ -13,9 +8,9 @@ import sangria.marshalling.circe._
 import sangria.schema._
 import sangria.slowlog.SlowLog
 import common.CustomScalars._
-import finalServer.SchemaDefinition.constantPrice
+import common.GraphQLRoutes.simpleServer
 
-import scala.language.postfixOps
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * Efficiently load author books information with Fetch API.
@@ -62,14 +57,9 @@ object Demo8FetchAuthorBooksRelation extends App {
 
   // STEP: Create akka-http server and expose GraphQL route
 
-  implicit val system = ActorSystem("sangria-server")
-  implicit val materializer = ActorMaterializer()
-
-  import system.dispatcher
-
   val repo = InMemoryDbRepo.createDatabase
 
-  val route = GraphQLRoutes.route { (query, operationName, variables, _, tracing) ⇒
+  simpleServer { (query, operationName, variables, _, tracing) ⇒
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName,
@@ -77,6 +67,4 @@ object Demo8FetchAuthorBooksRelation extends App {
       deferredResolver = DeferredResolver.fetchers(authorFetcher, bookFetcher),
       middleware = if (tracing) SlowLog.apolloTracing :: Nil else Nil)
   }
-
-  Http().bindAndHandle(route, "0.0.0.0", 8080)
 }

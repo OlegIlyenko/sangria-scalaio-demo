@@ -1,18 +1,15 @@
 package demos
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
-import common.GraphQLRoutes
 import model._
 import sangria.execution._
 import sangria.macros.derive._
 import sangria.marshalling.circe._
 import sangria.schema._
 import common.CustomScalars._
+import common.GraphQLRoutes.simpleServer
 import sangria.slowlog.SlowLog
 
-import scala.language.postfixOps
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /** Representing book-author relation with an object type field */
 object Demo6BookAuthorRelation extends App {
@@ -40,20 +37,13 @@ object Demo6BookAuthorRelation extends App {
 
   // STEP: Create akka-http server and expose GraphQL route
 
-  implicit val system = ActorSystem("sangria-server")
-  implicit val materializer = ActorMaterializer()
-
-  import system.dispatcher
-
   val repo = InMemoryDbRepo.createDatabase
 
-  val route = GraphQLRoutes.route { (query, operationName, variables, _, tracing) ⇒
+  simpleServer { (query, operationName, variables, _, tracing) ⇒
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName,
       // NEW: add middleware to show tracing info in the playground
       middleware = if (tracing) SlowLog.apolloTracing :: Nil else Nil)
   }
-
-  Http().bindAndHandle(route, "0.0.0.0", 8080)
 }

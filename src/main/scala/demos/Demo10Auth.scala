@@ -1,31 +1,28 @@
 package demos
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
-import common.{AuthToken, GraphQLRoutes}
+import common.AuthToken
 import finalServer.{AppContext, AuthException, AuthMiddleware, Authorized}
 import model._
 import sangria.execution._
-import sangria.execution.deferred._
 import sangria.macros.derive._
 import sangria.marshalling.circe._
 import sangria.schema._
 import common.CustomScalars._
+import common.GraphQLRoutes.simpleServer
 import finalServer.SchemaDefinition.constantPrice
 
-import scala.language.postfixOps
+import scala.concurrent.ExecutionContext.Implicits.global
 
-/** Securing GraphQL API with OAuth and JWT tokens */
-object Demo10Auth extends App {
-
-  /*
-    For testing, you can use this HTTP header:
-
-    {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik9sZWcgSWx5ZW5rbyIsImJvb2tzIjpbIk9MMzAzMTBXIiwiT0w5OTg0M1ciXX0.k4MOSGhh_55nFOimhX97PKa4c5lZguLN4UQQZ2jf9Iw"
-    }
+/**
+  * Securing GraphQL API with OAuth and JWT tokens.
+  *
+  * For testing, you can use this HTTP header:
+  *
+  * {
+  *   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik9sZWcgSWx5ZW5rbyIsImJvb2tzIjpbIk9MMzAzMTBXIiwiT0w4MDYwOVciXX0.S418V4YbgEyKfwMV06Euyo2fuYGZeoVqXGUoJG1EyjQ"
+  * }
   */
+object Demo10Auth extends App {
 
   // STEP: Define GraphQL Types & Schema
 
@@ -75,11 +72,6 @@ object Demo10Auth extends App {
 
   // STEP: Create akka-http server and expose GraphQL route
 
-  implicit val system = ActorSystem("sangria-server")
-  implicit val materializer = ActorMaterializer()
-
-  import system.dispatcher
-
   val repo = InMemoryDbRepo.createDatabase
 
   val reducers = List(
@@ -92,7 +84,7 @@ object Demo10Auth extends App {
     case (_, AuthException(message)) ⇒ HandledException(message)
   }
 
-  val route = GraphQLRoutes.route { (query, operationName, variables, authToken, _) ⇒
+  simpleServer { (query, operationName, variables, authToken, _) ⇒
     // NEW: save OAuth token info in the context object
     val context = AppContext(repo, repo, authToken)
 
@@ -106,6 +98,4 @@ object Demo10Auth extends App {
       // NEW: use middleware to prevent unauthorized access
       middleware = AuthMiddleware :: Nil)
   }
-
-  Http().bindAndHandle(route, "0.0.0.0", 8080)
 }

@@ -1,17 +1,14 @@
 package demos
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
-import common.GraphQLRoutes
 import model._
 import sangria.execution._
 import sangria.macros.derive._
 import sangria.marshalling.circe._
 import sangria.schema._
 import common.CustomScalars._
+import common.GraphQLRoutes.simpleServer
 
-import scala.language.postfixOps
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /** Use field arguments to provide pagination, sorting and filtering */
 object Demo5PaginationSortingFiltering extends App {
@@ -41,18 +38,11 @@ object Demo5PaginationSortingFiltering extends App {
 
   // STEP: Create akka-http server and expose GraphQL route
 
-  implicit val system = ActorSystem("sangria-server")
-  implicit val materializer = ActorMaterializer()
-
-  import system.dispatcher
-
   val repo = InMemoryDbRepo.createDatabase
 
-  val route = GraphQLRoutes.route { (query, operationName, variables, _, _) ⇒
+  simpleServer { (query, operationName, variables, _, _) ⇒
     Executor.execute(schema, query, repo,
       variables = variables,
       operationName = operationName)
   }
-
-  Http().bindAndHandle(route, "0.0.0.0", 8080)
 }
