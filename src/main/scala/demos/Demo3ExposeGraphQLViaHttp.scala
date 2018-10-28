@@ -40,7 +40,7 @@ object Demo3ExposeGraphQLViaHttp extends App {
   // NEW: define GraphQL route
   val route = GraphQLRoutes.route { (query, operationName, variables, _, _) ⇒
 
-    // NEW: execute GraphQL query comig from HTTP request
+    // NEW: execute GraphQL query coming from HTTP request
     Executor.execute(schema, query,
       variables = variables,
       operationName = operationName)

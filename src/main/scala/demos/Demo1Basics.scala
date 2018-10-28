@@ -26,7 +26,7 @@ object Demo1Basics extends App {
   // STEP: Define GraphQL Types & Schema
 
   val BookType = ObjectType("Book", fields[Unit, Book](
-    Field("id", IDType, resolve = _.value.id),
+    Field("id", StringType, resolve = _.value.id),
     Field("title", StringType, resolve = _.value.title),
     Field("authorId", StringType, resolve = _.value.authorId)))
 
