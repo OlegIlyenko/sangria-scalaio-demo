@@ -1,6 +1,7 @@
 package model
 
 import language.postfixOps
+
 import java.sql.Date
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -93,8 +94,10 @@ object InMemoryDbRepo {
   val Authors = TableQuery[AuthorTable]
 
   implicit object CirceLocalDateCodec extends Encoder[LocalDate] with Decoder[LocalDate] {
-    override def apply(a: LocalDate): Json = Encoder.encodeString.apply(a.format(DateTimeFormatter.ISO_LOCAL_DATE))
-    override def apply(c: HCursor): Result[LocalDate] = Decoder.decodeString.map(s => LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE)).apply(c)
+    override def apply(a: LocalDate): Json =
+      Encoder.encodeString.apply(a.format(DateTimeFormatter.ISO_LOCAL_DATE))
+    override def apply(c: HCursor): Result[LocalDate] =
+      Decoder.decodeString.map(s => LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE)).apply(c)
   }
 
   def createDatabase(implicit ec: ExecutionContext) = {
