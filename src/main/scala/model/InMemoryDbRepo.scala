@@ -5,7 +5,7 @@ import java.sql.Date
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration._
 import slick.jdbc.H2Profile.api._
 import io.circe._
@@ -48,7 +48,7 @@ class InMemoryDbRepo(db: Database)(implicit ec: ExecutionContext) extends BookRe
 
   def allBooks(limit: Int, offset: Int, sorting: Option[BookSorting.Value], title: Option[String]) = {
     val withFilter = title match {
-      case Some(t) ⇒ Books.filter(_.title like (s"%$t%"))
+      case Some(t) ⇒ Books.filter(_.title like s"%$t%")
       case None ⇒ Books
     }
 
