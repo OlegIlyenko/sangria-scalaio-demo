@@ -68,7 +68,7 @@ The demo uses a simple H2 in-memory database (it would be re-created automatical
 <details>
   <summary>DB schema DDL</summary>
   
-```
+```sql
 create table "BOOKS" (
   "BOOK_ID" VARCHAR NOT NULL PRIMARY KEY,
   "TITLE" VARCHAR NOT NULL,
