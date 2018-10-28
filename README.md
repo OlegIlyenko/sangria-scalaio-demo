@@ -48,7 +48,7 @@ top of previous steps:
 1. Exposing the GraphQL schema via HTTP API ([Demo3ExposeGraphQLViaHttp.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo3ExposeGraphQLViaHttp.scala))    
 1. Use an SQL database to load the book and author data returned by GraphQL API ([Demo4AddingDatabase.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo4AddingDatabase.scala))    
 1. Use field arguments to provide pagination, sorting and filtering ([Demo5PaginationSortingFiltering.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo5PaginationSortingFiltering.scala))    
-1. Representing book-author relation with an object type field ([Demo6BookAuthorRelation.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/))    
+1. Representing book-author relation with an object type field ([Demo6BookAuthorRelation.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo6BookAuthorRelation.scala))    
 1. Efficiently load author information with Fetch API ([Demo7UsingFetchers.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo7UsingFetchers.scala))    
 1. Efficiently load author books information with Fetch API ([Demo8FetchAuthorBooksRelation.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo8FetchAuthorBooksRelation.scala))    
 1. Guard GraphQL API from abuse with static query complexity analysis ([Demo9QueryComplexityAnalysis.scala](https://github.com/OlegIlyenko/sangria-scalaio-demo/blob/master/src/main/scala/demos/Demo9QueryComplexityAnalysis.scala))    
