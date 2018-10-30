@@ -1,5 +1,29 @@
 [
   {
+    "id": "OL30310W",
+    "title": "A theory of justice",
+    "description": null,
+    "authorId": "OL27530A"
+  },
+  {
+    "id": "OL80609W",
+    "title": "Du contrat social",
+    "description": null,
+    "authorId": "OL29048A"
+  },
+  {
+    "id": "OL99844W",
+    "title": "Kritik der reinen Vernunft",
+    "description": null,
+    "authorId": "OL18074A"
+  },
+  {
+    "id": "OL1068228W",
+    "title": "Utilitarianism",
+    "description": null,
+    "authorId": "OL108289A"
+  },
+  {
     "id": "OL653987W",
     "title": "Leviathan",
     "description": "Thomas Hobbes' Leviathan, from 1651, is one of the first and most influential arguments towards social contract. Written in the midst of the English Civil War, it concerns the structure of government and society and argues for strong central governance and the rule of an absolute sovereign as the way to avoid civil war and chaos.",
@@ -18,12 +42,6 @@
     "authorId": "OL50870A"
   },
   {
-    "id": "OL99844W",
-    "title": "Kritik der reinen Vernunft",
-    "description": null,
-    "authorId": "OL18074A"
-  },
-  {
     "id": "OL99843W",
     "title": "Grundlegung zur Metaphysik der Sitten",
     "description": null,
@@ -34,12 +52,6 @@
     "title": "Kritik der praktischen Vernunft",
     "description": null,
     "authorId": "OL18074A"
-  },
-  {
-    "id": "OL30310W",
-    "title": "A theory of justice",
-    "description": null,
-    "authorId": "OL27530A"
   },
   {
     "id": "OL30308W",
@@ -54,22 +66,10 @@
     "authorId": "OL108289A"
   },
   {
-    "id": "OL1068228W",
-    "title": "Utilitarianism",
-    "description": null,
-    "authorId": "OL108289A"
-  },
-  {
     "id": "OL1068185W",
     "title": "Principles of political economy",
     "description": null,
     "authorId": "OL108289A"
-  },
-  {
-    "id": "OL80609W",
-    "title": "Du contrat social",
-    "description": null,
-    "authorId": "OL29048A"
   },
   {
     "id": "OL80743W",
