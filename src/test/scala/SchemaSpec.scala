@@ -35,12 +35,12 @@ class SchemaSpec extends WordSpec with Matchers {
             "data": {
               "books": [
                 {
-                  "id": "OL653987W",
-                  "title": "Leviathan"
+                  "id": "OL30310W",
+                  "title": "A theory of justice"
                 },
                 {
-                  "id": "OL654092W",
-                  "title": "The English works of Thomas Hobbes of Malmesbury"
+                  "id": "OL80609W",
+                  "title": "Du contrat social"
                 }
               ]
             }
@@ -141,7 +141,7 @@ class SchemaSpec extends WordSpec with Matchers {
   }
 
   def executeQuery(query: Document, vars: Json = Json.obj(), token: Option[AuthToken] = None) = {
-    val context = new AppContext(repo, repo, token)
+    val context = AppContext(repo, repo, token)
 
     val futureResult = Executor.execute(schema, query, context,
       variables = vars,
